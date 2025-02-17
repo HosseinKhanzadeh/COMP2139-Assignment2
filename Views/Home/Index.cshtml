@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home - Inventory Management";
+}
+
+<div class="container text-center mt-5">
+    <h1 class="display-4">Welcome to Smart Inventory Management</h1>
+    <p class="lead">Easily manage products, categories, and track guest orders.</p>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Manage Products</h5>
+                    <p class="card-text">View, add, edit, and delete products in your inventory.</p>
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-primary">Go to Products</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">📂 Manage Categories</h5>
+                    <p class="card-text">Organize products into categories for better management.</p>
+                    <a href="@Url.Action("Index", "Categories")" class="btn btn-success">Go to Categories</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">🛒 Track Orders</h5>
+                    <p class="card-text">View guest orders and check order details.</p>
+                    <a href="@Url.Action("Index", "Orders")" class="btn btn-warning">Go to Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
