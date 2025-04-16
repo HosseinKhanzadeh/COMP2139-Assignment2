@@ -7,9 +7,8 @@
 <h2>Edit Product</h2>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="ProductId" />
-
     <div class="form-group">
+        <input type="hidden" asp-for="Id" />
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" required />
     </div>
@@ -26,8 +25,8 @@
 
     <div class="form-group">
         <label asp-for="CategoryId" class="control-label">Category</label>
-        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "Name"))" required>
-            <option value="">-- Select a Category --</option>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))" required>
+            <option value="">Select a category</option>
         </select>
     </div>
 

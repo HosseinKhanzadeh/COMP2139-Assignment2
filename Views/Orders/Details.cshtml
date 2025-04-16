@@ -8,10 +8,10 @@
 
 <div class="card">
     <div class="card-body">
-        <h4>Order ID: @Model.OrderId</h4>
+        <h4>Order ID: @Model.Id</h4>
         <p><strong>Guest Name:</strong> @Model.GuestName</p>
         <p><strong>Email:</strong> @Model.GuestEmail</p>
-        <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+        <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
         <p><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</p>
 
         <h3>Ordered Products</h3>

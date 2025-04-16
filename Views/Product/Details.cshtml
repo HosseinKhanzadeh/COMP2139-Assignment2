@@ -1,0 +1,47 @@
+@model InventoryManagement.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container">
+    <h1>Product Details</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Name</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8">@Model.Description</dd>
+
+                <dt class="col-sm-4">Price</dt>
+                <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+
+                <dt class="col-sm-4">Quantity</dt>
+                <dd class="col-sm-8">@Model.Quantity</dd>
+
+                <dt class="col-sm-4">Category</dt>
+                <dd class="col-sm-8">@Model.Category?.Name</dd>
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <dt class="col-sm-4">Image</dt>
+                    <dd class="col-sm-8">
+                        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid" style="max-height: 200px;" />
+                    </dd>
+                }
+            </dl>
+
+            <div class="mt-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                }
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -65,9 +65,9 @@ namespace InventoryManagement.Controllers
         // POST: Categories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
-            if (id != category.CategoryId) return NotFound();
+            if (id != category.Id) return NotFound();
             if (ModelState.IsValid)
             {
                 _context.Update(category);
@@ -81,7 +81,7 @@ namespace InventoryManagement.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-            var category = await _context.Categories.FirstOrDefaultAsync(m => m.CategoryId == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
             if (category == null) return NotFound();
             return View(category);
         }

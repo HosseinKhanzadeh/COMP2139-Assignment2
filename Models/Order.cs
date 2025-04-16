@@ -8,7 +8,15 @@ namespace InventoryManagement.Models
     public class Order
     {
         [Key]
-        public int OrderId { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string GuestName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string GuestEmail { get; set; }
 
         private DateTime _orderDate = DateTime.UtcNow;
         
@@ -20,18 +28,9 @@ namespace InventoryManagement.Models
         }
 
         [Required]
-        [StringLength(100)]
-        public string GuestName { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string GuestEmail { get; set; }
-
-        [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalPrice { get; set; }
+        public decimal TotalAmount { get; set; }
 
-        // ✅ FIX: Ensure OrderDetails is never null
-        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

@@ -69,9 +69,9 @@ namespace InventoryManagement.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,CategoryId,Price,Quantity")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryId,Price,Quantity")] Product product)
         {
-            if (id != product.ProductId) return NotFound();
+            if (id != product.Id) return NotFound();
             if (ModelState.IsValid)
             {
                 _context.Update(product);
@@ -86,7 +86,7 @@ namespace InventoryManagement.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(m => m.ProductId == id);
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
             if (product == null) return NotFound();
             return View(product);
         }
@@ -104,6 +104,22 @@ namespace InventoryManagement.Controllers
             }
 
             return RedirectToAction("Index"); // ✅ Redirect to the Products list
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        private bool ProductExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

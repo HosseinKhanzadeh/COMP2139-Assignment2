@@ -6,33 +6,35 @@
 
 <h2>Orders</h2>
 
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Order</a>
+</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>Order ID</th>
             <th>Guest Name</th>
             <th>Email</th>
-            <th>Total Price</th>
             <th>Order Date</th>
+            <th>Total Amount</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var order in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@order.OrderId</td>
-                <td>@order.GuestName</td>
-                <td>@order.GuestEmail</td>
-                <td>@order.TotalPrice.ToString("C")</td>
-                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@item.Id</td>
+                <td>@item.GuestName</td>
+                <td>@item.GuestEmail</td>
+                <td>@item.OrderDate.ToShortDateString()</td>
+                <td>@item.TotalAmount.ToString("C")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@order.OrderId">View</a> |
-                    <a asp-action="Delete" asp-route-id="@order.OrderId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<a asp-action="Create" class="btn btn-primary">Create New Order</a>

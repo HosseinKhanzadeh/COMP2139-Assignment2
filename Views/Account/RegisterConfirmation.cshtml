@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Registration Confirmation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-success">
+    <p>
+        Thank you for registering! We have sent a confirmation email to <strong>@ViewBag.Email</strong>.
+        Please check your email and confirm your account to complete the registration process.
+    </p>
+</div>
+
+<div>
+    <p>
+        Please note that you won't be able to fully access your account until you confirm your email address.
+        If you don't receive the email within a few minutes, please:
+    </p>
+    <ul>
+        <li>Check your spam folder</li>
+        <li>Make sure you entered the correct email address</li>
+        <li>If you still have issues, please contact support</li>
+    </ul>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Login" class="btn btn-primary">Proceed to Login</a>
+</div> 

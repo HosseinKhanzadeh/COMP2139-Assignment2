@@ -19,7 +19,10 @@ namespace InventoryManagement.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var orders = await _context.Orders.Include(o => o.OrderDetails).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .ToListAsync();
             return View(orders);
         }
 
@@ -33,31 +36,40 @@ namespace InventoryManagement.Controllers
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuestName,GuestEmail,TotalPrice")] Order order, int[] ProductIds, int[] Quantities)
+        public async Task<IActionResult> Create([Bind("Id,OrderDate,TotalAmount,GuestName,GuestEmail")] Order order, int[] ProductIds, int[] Quantities, decimal[] Prices)
         {
             if (ModelState.IsValid)
             {
-                order.OrderDetails = new List<OrderDetail>();
-
-                for (int i = 0; i < ProductIds.Length; i++)
-                {
-                    var product = await _context.Products.FindAsync(ProductIds[i]);
-                    if (product != null)
-                    {
-                        var orderDetail = new OrderDetail
-                        {
-                            ProductId = product.ProductId,
-                            Quantity = Quantities[i],
-                            UnitPrice = product.Price
-                        };
-                        order.OrderDetails.Add(orderDetail);
-                    }
-                }
+                order.OrderDate = DateTime.UtcNow;
+                order.TotalAmount = 0;
 
                 _context.Add(order);
                 await _context.SaveChangesAsync();
+
+                if (ProductIds != null)
+                {
+                    for (int i = 0; i < ProductIds.Length; i++)
+                    {
+                        var product = await _context.Products.FindAsync(ProductIds[i]);
+                        if (product != null)
+                        {
+                            var orderDetail = new OrderDetail
+                            {
+                                OrderId = order.Id,
+                                ProductId = ProductIds[i],
+                                Quantity = Quantities[i],
+                                UnitPrice = Prices[i]
+                            };
+                            order.TotalAmount += orderDetail.Quantity * orderDetail.UnitPrice;
+                            _context.OrderDetails.Add(orderDetail);
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Products = await _context.Products.ToListAsync();
             return View(order);
         }
 
@@ -68,7 +80,7 @@ namespace InventoryManagement.Controllers
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null) return NotFound();
             return View(order);
         }
@@ -77,26 +89,29 @@ namespace InventoryManagement.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-            var order = await _context.Orders.FindAsync(id);
-
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null) return NotFound();
-            
             return View(order);
         }
 
         // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")] // ✅ Ensures it maps to the expected "Delete" action
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (order != null)
             {
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
             }
-
-            return RedirectToAction("Index"); // ✅ Redirect to the Orders list after deletion
+            return RedirectToAction("Index");
         }
     }
 }

@@ -20,8 +20,8 @@
 
     <div class="form-group">
         <label asp-for="CategoryId" class="control-label">Category</label>
-        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "Name"))" required>
-            <option value="">-- Select a Category --</option>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))" required>
+            <option value="">Select a category</option>
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
